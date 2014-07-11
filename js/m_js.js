@@ -1,15 +1,21 @@
 //function $(id){return document.getElementsByClassName(id);}
 var autokey = false;
-
+var moveL,moveR;
+var flagL,flagR;
 function MoveLPicture(elementClass,final_x,final_y,interval){
 	if(!document.getElementsByClassName) return false;
   	if(!document.getElementsByClassName(elementClass)) return false;
-  	var elem = document.getElementsByClassName(elementClass);
-  	if(elem.movement) {
-    	clearTimeout(elem.movement);
+  	var Elem = document.getElementsByClassName(elementClass);
+    var elem = Elem[0];
+    if(Elem.length == 0){
+      return false;
+    }
+  	if(flagL) {
+    	clearTimeout(moveL);
+      
   	}
   	if(!elem.style.left){
-  		elem.style.left = 0 + "px";
+  		elem.style.left = -455 + "px";
   	}
   	if(!elem.style.top){
   		elem.style.top = 0 + "px";
@@ -18,7 +24,8 @@ function MoveLPicture(elementClass,final_x,final_y,interval){
   	var ypos = parseInt(elem.style.top);
 
   	if((xpos == final_x) && (ypos == final_y)){
-  		return true;
+  		flagL = true;
+      
   	}
   	if (xpos < final_x) {
     	var dist = Math.ceil((final_x - xpos)/10);
@@ -38,19 +45,24 @@ function MoveLPicture(elementClass,final_x,final_y,interval){
   }
   elem.style.left = xpos + "px";
   elem.style.top = ypos + "px";
-  var repeat = "moveElement('"+elementClass+"',"+final_x+","+final_y+","+interval+")";
-  elem.movement = setTimeout(repeat,interval);
+  var repeat = "MoveLPicture('"+elementClass+"',"+final_x+","+final_y+","+interval+")";
+  moveL = setTimeout(repeat,interval);
 }
 
 function MoveRPicture(elementClass,final_x,final_y,interval){
 	if(!document.getElementsByClassName) return false;
   	if(!document.getElementsByClassName(elementClass)) return false;
-  	var elem = document.getElementsByClassName(elementClass);
-  	if(elem.movement) {
-    	clearTimeout(elem.movement);
+  	var Elem = document.getElementsByClassName(elementClass);
+    if(Elem.length == 0){
+      return false;
+    }
+    var elem = Elem[0];
+  	if(flagR) {
+    	clearTimeout(moveR);
+      
   	}
   	if(!elem.style.right){
-  		elem.style.right = 0 + "px";
+  		elem.style.right = -455 + "px";
   	}
   	if(!elem.style.top){
   		elem.style.top = 0 + "px";
@@ -59,7 +71,8 @@ function MoveRPicture(elementClass,final_x,final_y,interval){
   	var ypos = parseInt(elem.style.top);
 
   	if((xpos == final_x) && (ypos == final_y)){
-  		return true;
+  		flagR = true;
+      NextToCurrent();
   	}
   	if (xpos < final_x) {
     	var dist = Math.ceil((final_x - xpos)/10);
@@ -79,8 +92,8 @@ function MoveRPicture(elementClass,final_x,final_y,interval){
   }
   elem.style.right = xpos + "px";
   elem.style.top = ypos + "px";
-  var repeat = "moveElement('"+elementClass+"',"+final_x+","+final_y+","+interval+")";
-  elem.movement = setTimeout(repeat,interval);
+  var repeat = "MoveRPicture('"+elementClass+"',"+final_x+","+final_y+","+interval+")";
+  moveR = setTimeout(repeat,interval);
 }
 
 function manualPlay(txt,direction){
@@ -90,107 +103,141 @@ function manualPlay(txt,direction){
   if(direction == 1){
     var leftImg = document.getElementsByClassName("lcurrent");
     var rightImg = document.getElementsByClassName("rcurent");
-    var curentNum = parseInt(leftImg.id);
+    var curentNum = parseInt(leftImg[0].id);
     var nextNum = (curentNum + 1) % 5;
 
     var nextImgL = document.createElement("img");
+    //debugger;
     nextImgL.src = txt[nextNum].leftpos;
     nextImgL.alt = "";
+    var jqlimg = $(nextImgL);
     var nextImgR = document.createElement("img");
     nextImgR.src = txt[nextNum].rightpos;
     nextImgR.alt = "";
+    var jqrimg = $(nextImgR);
 
-    var ldiv = document.createElement("div");
+    var ldiv = document.createElement('div');
     ldiv.id = nextNum;
-    ldiv.class = "lnext";
-    nextImgL.appendTo(ldiv);
-    ldiv.appendTo(document.getElementsByClassName("box1"));
+    ldiv.className = "lnext";
+    var jqldiv = $(ldiv);
+    //jqldiv.id = nextNum;
+    jqlimg.appendTo(jqldiv);
+    jqldiv.appendTo($(".box1"));
 
-    var rdiv = document.createElement("div");
+    var rdiv = document.createElement('div');
     rdiv.id = nextNum;
-    rdiv.class = "rnext";
-    nextImgR.appendTo(rdiv);
-    rdiv.appendTo(document.getElementsByClassName("box2"));
+    rdiv.className = "rnext";
+    var jqrdiv = $(rdiv);
+    //jqrdiv.id = nextNum;
+    jqrimg.appendTo(jqrdiv);
+    jqrdiv.appendTo($(".box2"));
 
-    moveLPicture(lnext,0,0,5);
-    moveRPicture(rnext,0,0,5);
-    NextToCurrent();
+    MoveLPicture("lnext",0,0,10);
+    MoveRPicture("rnext",0,0,10);
+    //NextToCurrent();
   }
   else{
     var leftImg = document.getElementsByClassName("lcurrent");
     var rightImg = document.getElementsByClassName("rcurent");
-    var curentNum = parseInt(leftImg.id);
+    var curentNum = parseInt(leftImg[0].id);
     var nextNum = (curentNum - 1) % 5;
+    if(nextNum < 0){
+      nextNum += 5;
+    }
 
     var nextImgL = document.createElement("img");
+    //debugger;
     nextImgL.src = txt[nextNum].leftpos;
     nextImgL.alt = "";
+    var jqlimg = $(nextImgL);
     var nextImgR = document.createElement("img");
     nextImgR.src = txt[nextNum].rightpos;
     nextImgR.alt = "";
+    var jqrimg = $(nextImgR);
 
-    var ldiv = document.createElement("div");
+    var ldiv = document.createElement('div');
     ldiv.id = nextNum;
-    ldiv.class = "lnext";
-    nextImgL.appendTo(ldiv);
-    ldiv.appendTo(document.getElementsByClassName("box1"));
+    ldiv.className = "lnext";
+    var jqldiv = $(ldiv);
+    //jqldiv.id = nextNum;
+    jqlimg.appendTo(jqldiv);
+    jqldiv.appendTo($(".box1"));
 
-    var rdiv = document.createElement("div");
+    var rdiv = document.createElement('div');
     rdiv.id = nextNum;
-    rdiv.class = "rnext";
-    nextImgR.appendTo(rdiv);
-    rdiv.appendTo(document.getElementsByClassName("box2"));
+    rdiv.className = "rnext";
+    var jqrdiv = $(rdiv);
+    //jqrdiv.id = nextNum;
+    jqrimg.appendTo(jqrdiv);
+    jqrdiv.appendTo($(".box2"));
 
-    moveLPicture(lnext,0,0,5);
-    moveRPicture(rnext,0,0,5);
-    NextToCurrent();
+    MoveLPicture("lnext",0,0,10);
+    MoveRPicture("rnext",0,0,10);
+    //NextToCurrent();
   }
 }
 
 function NextToCurrent(){
-	var leftImgC = document.getElementsByClassName("lcurrent");
-	var rightImgC = document.getElementsByClassName("rcurent");
+	//var leftImgC = document.getElementsByClassName("lcurrent");
+	//var rightImgC = document.getElementsByClassName("rcurent");
 	var leftImgN = document.getElementsByClassName("lnext");
 	var rightImgN = document.getElementsByClassName("rnext");
-	leftImgC.parentNode.removeChild("leftImgC");
-	rightImgC.parentNode.removeChild("rightImgC");
-	leftImgN.setAttribute("class","lcurrent");	
-	rightImgN.setAttribute("class","rcurent");
+  if((flagL != true) || (flagR != true))
+  {
+      return;
+  }
+	//leftImgC[0].parentNode.removeChild(leftImgC[0]);
+	//rightImgC[0].parentNode.removeChild(rightImgC[0]);
+  $('.lcurrent').remove();
+  $('.rcurrent').remove();
+	leftImgN[0].className = "lcurrent";
+	rightImgN[0].className = "rcurrent";
+  flagR = false;
+  flagL = false;
 	//leftImgN.style.z-index = 1;
 	//rightImgN.style.z-index = 1;
 }
 
 
-function autoPlay(txt){
-	if(auto){
+function autoPlay(){
+	if(autokey){
 		return false;
 	}
+  var txt = json.Picture;
 	var leftImg = document.getElementsByClassName("lcurrent");
 	var rightImg = document.getElementsByClassName("rcurent");
-	var curentNum = parseInt(leftImg.id);
+	var curentNum = parseInt(leftImg[0].id);
 	var nextNum = (curentNum + 1) % 5;
 
 	var nextImgL = document.createElement("img");
-	nextImgL.src = txt[nextNum].leftpos;
-	nextImgL.alt = "";
-	var nextImgR = document.createElement("img");
-	nextImgR.src = txt[nextNum].rightpos;
-	nextImgR.alt = "";
+    //debugger;
+    nextImgL.src = txt[nextNum].leftpos;
+    nextImgL.alt = "";
+    var jqlimg = $(nextImgL);
+    var nextImgR = document.createElement("img");
+    nextImgR.src = txt[nextNum].rightpos;
+    nextImgR.alt = "";
+    var jqrimg = $(nextImgR);
 
-	var ldiv = document.createElement("div");
-	ldiv.id = nextNum;
-	ldiv.class = "lnext";
-	nextImgL.appendTo(ldiv);
-	ldiv.appendTo(document.getElementsByClassName("box1"));
+    var ldiv = document.createElement('div');
+    ldiv.id = nextNum;
+    ldiv.className = "lnext";
+    var jqldiv = $(ldiv);
+    //jqldiv.id = nextNum;
+    jqlimg.appendTo(jqldiv);
+    jqldiv.appendTo($(".box1"));
 
-	var rdiv = document.createElement("div");
-	rdiv.id = nextNum;
-	rdiv.class = "rnext";
-	nextImgR.appendTo(rdiv);
-	rdiv.appendTo(document.getElementsByClassName("box2"));
+    var rdiv = document.createElement('div');
+    rdiv.id = nextNum;
+    rdiv.className = "rnext";
+    var jqrdiv = $(rdiv);
+    //jqrdiv.id = nextNum;
+    jqrimg.appendTo(jqrdiv);
+    jqrdiv.appendTo($(".box2"));
 
-	moveLPicture(lnext,0,0,5);
-	moveRPicture(rnext,0,0,5);
-	NextToCurrent();
+    MoveLPicture("lnext",0,0,5);
+    MoveRPicture("rnext",0,0,5);
+    NextToCurrent();
+    
 }
 

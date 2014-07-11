@@ -136,7 +136,7 @@ var xmlhttp;
 var json;
 function loadDoc(url)
 {
-	xmlhttp=null;
+	xmlhttp = null;
 	if (window.XMLHttpRequest)
   	{// code for Firefox, Opera, IE7, etc.
   		xmlhttp=new XMLHttpRequest();
@@ -148,7 +148,7 @@ function loadDoc(url)
 	if (xmlhttp!=null)
   	{
   		
-  		xmlhttp.onreadystatechange=state_Change;
+  		xmlhttp.onreadystatechange = state_Change;
   		xmlhttp.open("GET",url,true);
   		xmlhttp.send();
   		
@@ -167,7 +167,8 @@ function state_Change()
     	{// 200 = "OK"
     		var info = xmlhttp.responseText;
     		//debugger;
-    		//json = eval("("+info+")");
+    		json = eval("("+info+")");
+    		//debugger;
     		
     	}
   		else
@@ -180,11 +181,19 @@ function state_Change()
 //loadDoc('https://raw.githubusercontent.com/MyXOF/hw4.github.io/master/JSON.json');
 
  $(document).ready(function(){
- 	loadDoc('https://raw.githubusercontent.com/MyXOF/MyXOF.github.io/master/json.json');
+ 	loadDoc('https://rawgit.com/MyXOF/hw4.github.io/master/JSON/JSON.json');
+ 	var t;
  	$(".box").mouseleave(function(evt){
 	//loadDoc('JSON/JSON.json',0);setInterval('autoPlay(json.Picture)',3000);
+		autokey = false;
+		var  repeat = "autoPlay()";
+    	t = setInterval(repeat,5000);
 	//debugger;
-	evt.stopPropagation();
+		evt.stopPropagation();
+	});
+	$(".box").mouseover(function(evt){
+		autokey = true;
+		clearTimeout(t);
 	});
  });
 $(document).ready(function(){
@@ -193,15 +202,18 @@ $(document).ready(function(){
 	
 	manualPlay(json.Picture,1);
 	//evt.stopPropagation();
-
+	NextToCurrent();
 	});
 });
 $(document).ready(function(){
 	$(".arrright").click(function(){
 	//alert("2");
+
 	manualPlay(json.Picture,2);
+	NextToCurrent();
 	//evt.stopPropagation();
-	});
+	}
+	);
 });
 </script>
 <body>
