@@ -1,13 +1,13 @@
 {
 	"COMMENT":[
 		{
-			"pos":"https://rawgit.com/MyXOF/hw4.github.io/master/JSON/COMMENT1.json"
+			"pos":"https://cdn.jsdelivr.net/gh/MyXOF/hw4.github.io/JSON/COMMENT1.json"
 		},
 		{
-			"pos":"https://rawgit.com/MyXOF/hw4.github.io/master/JSON/COMMENT2.json"
+			"pos":"https://cdn.jsdelivr.net/gh/MyXOF/hw4.github.io/JSON/COMMENT2.json"
 		},
 		{
-			"pos":"https://rawgit.com/MyXOF/hw4.github.io/master/JSON/COMMENT3.json"
+			"pos":"https://cdn.jsdelivr.net/gh/MyXOF/hw4.github.io/JSON/COMMENT3.json"
 		}
 	]
 }
